@@ -14,6 +14,10 @@ A poker tournament hand range selector based on the number of Big Blinds (BBs). 
 </ul>
 
 <p>This project is a simplified model and does not account for these nuances. However, it serves as a foundation for deeper exploration into poker hand range selection and probabilistic decision-making.</p>
+#Preview
+<br>
+<img width="490" alt="image" src="https://github.com/user-attachments/assets/2fde9b85-5490-42da-8dbd-a197003fd014" />
+<br>
 
 **Overview** <br>
 In poker tournaments, effective decision-making is crucial, especially when considering hand ranges relative to your stack size measured in Big Blinds (BBs). This tool assists players in selecting appropriate hand ranges based on their current BB count, enhancing strategic play.
