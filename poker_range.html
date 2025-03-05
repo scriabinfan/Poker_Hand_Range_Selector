@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Hand Range Selector</title>
+    <script>
+        let timeout = null;
+
+        function updateRange() {
+            clearTimeout(timeout); // Prevent multiple rapid requests
+            
+            timeout = setTimeout(() => {
+                let variance = document.getElementById("varianceInput").value;
+                let strategy = document.getElementById("strategySelect").value;
+                let bb = { "deep": 50, "mid": 30, "short": 15, "micro": 5 }[strategy]; // Assign BB values to strategies
+                console.log("Sending Request to Flask - Strategy:", strategy, "Variance:", variance);
+                
+                let rangeImage = document.getElementById("rangeImage");
+                rangeImage.src = `http://127.0.0.1:5050/get_range?bb=${bb}&variance=${variance}&timestamp=${new Date().getTime()}`;
+            }, 500); // Delay request to prevent spam
+        }
+    </script>
+</head>
+<body>
+    <h2>Poker Hand Range Selector</h2>
+    <p>
+        This tool allows you to visualize optimal poker hand ranges based on your selected strategy and variance level. 
+        Adjust the variance slider to modify risk tolerance and choose a stack size strategy to reflect different game scenarios. 
+        The displayed range updates dynamically based on your selections.
+    </p>
+    <p>
+        The probability of each starting hand was determined using a <b>Monte Carlo simulation</b>. A default selection threshold is set based on quantiles from this simulation. 
+        <br>
+        The variance setting modifies this threshold using the formula:
+        <br>
+        <br>
+        <b> adjusted_threshold = selection_threshold - (variance_level * 0.05) </b>
+        <br>
+        <br>
+        To ensure practical limits, the adjusted threshold is constrained within a range of <b>0.3 to 0.85</b>.
+    </p>
+    <label for="varianceInput">Select Variance Level (0-1): </label>
+    <input type="range" id="varianceInput" value="0.1" min="0" max="1" step="0.01" oninput="updateRange()">
+    <span id="varianceValue">0.1</span>
+    <br><br>
+    <label for="strategySelect">Choose Strategy:</label>
+    <select id="strategySelect" onchange="updateRange()">
+        <option value="deep">Deep Stack (50+ BBs)</option>
+        <option value="mid">Mid Stack (20-50 BBs)</option>
+        <option value="short">Short Stack (10-20 BBs)</option>
+        <option value="micro">Micro Stack (&lt;10 BBs)</option>
+    </select>
+    <br><br>
+    <img id="rangeImage" src="http://127.0.0.1:5050/get_range?bb=50&variance=0.1" alt="Poker Hand Range" style="width:600px;">
+    
+    <script>
+        document.getElementById("varianceInput").addEventListener("input", function() {
+            document.getElementById("varianceValue").textContent = this.value;
+        });
+    </script>
+</body>
+</html>
