@@ -4,8 +4,9 @@ import multiprocessing
 import os
 import eval7
 
+#This simulate hand equity over many random matchups using eval7
+
 def monte_carlo_equity(hand_label, iterations=250_000): #250k simulated matches
-    """Simulate hand equity over many random matchups using eval7."""
     ranks = "AKQJT98765432"
     suits = ["h", "d", "c", "s"]
     
@@ -40,7 +41,7 @@ def monte_carlo_equity(hand_label, iterations=250_000): #250k simulated matches
 
     return hand_label, wins / iterations  # Return hand & probability tuple
 
-# Generate all 169 possible starting hands
+#169 possible starting hands
 ranks = "AKQJT98765432"
 hands = []
 
@@ -53,7 +54,7 @@ for i, r1 in enumerate(ranks):
         else:
             hands.append(f"{r1}{r2}")  # Pocket pairs
 
-# ✅ **Parallel Processing**
+#help processing was taking too long
 if __name__ == "__main__":
     num_workers = multiprocessing.cpu_count()  # Use all available CPU cores
     with multiprocessing.Pool(num_workers) as pool:
